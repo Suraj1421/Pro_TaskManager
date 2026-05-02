@@ -10,6 +10,9 @@ export const createProjectSchema = z.object({
 });
 
 export const updateProjectSchema = z.object({
+  params: z.object({
+    id: objectIdSchema,
+  }),
   body: z
     .object({
       name: z.string().min(2).max(120).trim().optional(),
@@ -21,7 +24,16 @@ export const updateProjectSchema = z.object({
     }),
 });
 
+export const projectIdParamSchema = z.object({
+  params: z.object({
+    id: objectIdSchema,
+  }),
+});
+
 export const addMemberSchema = z.object({
+  params: z.object({
+    id: objectIdSchema,
+  }),
   body: z.object({
     userId: objectIdSchema,
     role: z.enum(['owner', 'admin', 'member']).optional(),

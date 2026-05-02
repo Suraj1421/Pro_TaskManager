@@ -14,6 +14,7 @@ import validate from '../middleware/validate.js';
 import {
   createProjectSchema,
   updateProjectSchema,
+  projectIdParamSchema,
   addMemberSchema,
   updateMemberSchema,
 } from '../validators/projectSchemas.js';
@@ -26,28 +27,34 @@ router.use(protect);
 router.get('/', listProjects);
 router.post('/', validate(createProjectSchema), createProject);
 
-router.get('/:id', loadProject, requireProjectMember, getProject);
+router.get('/:id', validate(projectIdParamSchema), loadProject, requireProjectMember, getProject);
 router.patch(
   '/:id',
+  validate(updateProjectSchema),
   loadProject,
   requireProjectRole('owner', 'admin'),
-  validate(updateProjectSchema),
   updateProject
 );
-router.delete('/:id', loadProject, requireProjectRole('owner'), deleteProject);
+router.delete(
+  '/:id',
+  validate(projectIdParamSchema),
+  loadProject,
+  requireProjectRole('owner'),
+  deleteProject
+);
 
 router.post(
   '/:id/members',
+  validate(addMemberSchema),
   loadProject,
   requireProjectRole('owner', 'admin'),
-  validate(addMemberSchema),
   addMember
 );
 router.patch(
   '/:id/members/:memberId',
+  validate(updateMemberSchema),
   loadProject,
   requireProjectRole('owner', 'admin'),
-  validate(updateMemberSchema),
   updateMember
 );
 router.delete(

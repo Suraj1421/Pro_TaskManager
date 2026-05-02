@@ -6,9 +6,15 @@ dotenv.config();
 
 const PORT = process.env.PORT || 5000;
 const MONGO_URI = process.env.MONGO_URI;
+const JWT_SECRET = process.env.JWT_SECRET;
 
 if (!MONGO_URI) {
   console.error('MONGO_URI is required');
+  process.exit(1);
+}
+
+if (!JWT_SECRET) {
+  console.error('JWT_SECRET is required');
   process.exit(1);
 }
 

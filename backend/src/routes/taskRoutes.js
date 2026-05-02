@@ -9,7 +9,7 @@ import {
 import { protect } from '../middleware/auth.js';
 import { loadProject, requireProjectMember } from '../middleware/projectAccess.js';
 import validate from '../middleware/validate.js';
-import { createTaskSchema, updateTaskSchema } from '../validators/taskSchemas.js';
+import { createTaskSchema, updateTaskSchema, taskIdParamSchema } from '../validators/taskSchemas.js';
 
 const router = Router({ mergeParams: true });
 
@@ -17,8 +17,8 @@ router.use(protect, loadProject, requireProjectMember);
 
 router.get('/', listTasks);
 router.post('/', validate(createTaskSchema), createTask);
-router.get('/:taskId', getTask);
+router.get('/:taskId', validate(taskIdParamSchema), getTask);
 router.patch('/:taskId', validate(updateTaskSchema), updateTask);
-router.delete('/:taskId', deleteTask);
+router.delete('/:taskId', validate(taskIdParamSchema), deleteTask);
 
 export default router;

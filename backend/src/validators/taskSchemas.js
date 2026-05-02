@@ -40,3 +40,10 @@ export const updateTaskSchema = z.object({
       message: 'At least one field is required',
     }),
 });
+
+export const taskIdParamSchema = z.object({
+  params: z.object({
+    projectId: objectIdSchema,
+    taskId: objectIdSchema,
+  }),
+});
